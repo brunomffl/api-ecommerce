@@ -1,0 +1,22 @@
+{
+  "name": "api-ecommerce",
+  "version": "1.0.0",
+  "description": "Desenvolvendo uma API que gerencia pedidos de um comércio web",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "tsx --watch src/server.ts"
+  },
+  "author": "Bruno Cardoso",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.4.1",
+    "prettier": "3.6.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5.5.4",
+    "tsconfig-paths": "^4.2.3"
+  }
+}
