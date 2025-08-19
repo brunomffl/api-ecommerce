@@ -9,6 +9,7 @@
   "author": "Bruno Cardoso",
   "license": "ISC",
   "dependencies": {
+    "celebrate": "^15.0.3",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
     "firebase-admin": "^13.4.0"

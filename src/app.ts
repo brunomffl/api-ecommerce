@@ -1,5 +1,6 @@
 import 'express-async-errors';
 import express from "express";
+import { errors } from "celebrate";
 import { initializeApp } from "firebase-admin/app";
 import { routes } from "./routes";
 import { errorHandling } from "./middlewares/error-handling";
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use(errorHandling)
+app.use(errors()); // Celebrate errors PRIMEIRO
+app.use(errorHandling); // Seu middleware customizado DEPOIS
 
 export { app };

@@ -2,12 +2,6 @@ import { Request, Response } from "express";
 import { getFirestore } from "firebase-admin/firestore";
 import { AppError } from "@/utils/AppError";
 
-type User = {
-    id: string,
-    nome: string,
-    email: string
-}
-
 class UsersController {
 
     async create(req: Request, res: Response) {
