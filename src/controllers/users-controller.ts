@@ -1,44 +1,23 @@
 import { Request, Response } from "express";
-import { getFirestore } from "firebase-admin/firestore";
-import { AppError } from "@/utils/AppError";
+import { UserServices } from "@/services";
 
 class UsersController {
 
     async create(req: Request, res: Response) {
         const user = req.body;
-        const userSalvo = await getFirestore().collection("users").add(user);
+        await new UserServices().create(user);
 
-        return res.status(201).json({ message: `Usuário ${ userSalvo.id } criado com sucesso!` });
+        return res.status(201).json({ message: "Usuário criado com sucesso!" });
     }
 
     async index(req: Request, res: Response) {
-        const snapshot = await getFirestore().collection("users").get();
-        //mapeando os usuários e transformando em um array
-        const users = snapshot.docs.map(doc => {
-
-            return {
-                id: doc.id,
-                ...doc.data()
-            };
-        });
-
-        return res.json(users);
+        return res.status(200).json(await new UserServices().index());
     };
 
     async show(req: Request, res: Response) {
-
         const { id } = req.params;
-        const doc = await getFirestore().collection("users").doc(id).get();
-        if (doc.exists) {
-            const user = {
-                id: doc.id,
-                ...doc.data()
-            }
-            return res.status(200).json(user)
-        } else {
-            throw new AppError("Usuário não encontrado", 404);
-        }
 
+        return res.status(200).json(await new UserServices().show(id));
     };
 
     async update(req: Request, res: Response) {
@@ -46,28 +25,17 @@ class UsersController {
         const { id } = req.params;
         const { nome, email } = req.body;
 
-        const docRef = getFirestore().collection("users").doc(id);
+        await new UserServices().update(id, nome, email);
 
-        if ((await docRef.get()).exists) {
-            await docRef.set({
-                nome,
-                email,
-            });
-
-            return res.status(204);
-        } else {
-            throw new AppError("Usuário não encontrado", 404)
-        }
-
+        return res.status(204).json({ message: "Usuário atualizado com sucesso!" })
     };
 
     async delete(req: Request, res: Response) {
-
         const { id } = req.params;
-        await getFirestore().collection("users").doc(id).delete();
+        
+        await new UserServices().delete(id);
 
-        return res.status(200);
-
+        return res.status(204).json({ message: "Usuário deletado com sucesso!" });
     }
 
 };

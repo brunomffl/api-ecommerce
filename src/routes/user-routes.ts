@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { UsersController } from "@/controllers/users-controller";
 import { celebrate, Segments } from "celebrate";
-import { userSchema } from "@/models/user-model";
+import { userSchema } from "@/schemas/user-schema";
 
 const usersRoutes = Router();
 const usersController = new UsersController();
