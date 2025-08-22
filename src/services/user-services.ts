@@ -48,6 +48,13 @@ class UserServices{
     }
 
     async delete(id: string): Promise<void>{
+        const user = await getFirestore().collection("users").doc(id);
+        const doc = await user.get();
+
+        if(!doc.exists){
+            throw new AppError("Usuário não encontrado!", 404)
+        };
+
         await getFirestore().collection("users").doc(id).delete();
     }
 
