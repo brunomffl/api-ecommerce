@@ -27,7 +27,7 @@ class UsersController {
 
         await new UserServices().update(id, nome, email);
 
-        return res.status(204).json({ message: "Usuário atualizado com sucesso!" })
+        return res.status(204).end();
     };
 
     async delete(req: Request, res: Response) {
@@ -35,7 +35,7 @@ class UsersController {
         
         await new UserServices().delete(id);
 
-        return res.status(204).json({ message: "Usuário deletado com sucesso!" });
+        return res.status(204).end();
     }
 
 };
