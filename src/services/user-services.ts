@@ -1,8 +1,15 @@
 import { User } from "@/schemas/user-schema";
 import { getFirestore } from "firebase-admin/firestore";
 import { AppError } from "@/utils/AppError";
+import { AuthService } from "./auth-services";
 
 class UserServices{
+
+    private authService: AuthService;
+
+    constructor() {
+        this.authService = new AuthService()
+    }
 
     async index(): Promise<User[]>{
         const snapshot = await getFirestore().collection("users").get();
@@ -31,7 +38,16 @@ class UserServices{
     }
 
     async create(user: User): Promise<void>{
-        await getFirestore().collection("users").add(user);
+        const userAuth = await this.authService.create(user);
+        
+        const { password, ...userData } = user;
+        
+        const userWithUid = {
+            ...userData,
+            id: userAuth.uid
+        };
+
+        await getFirestore().collection("users").doc(userAuth.uid).set(userWithUid);
     }
 
     async update(id: string, nome: string, email: string): Promise<void>{
