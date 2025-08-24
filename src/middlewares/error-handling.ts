@@ -8,6 +8,11 @@ export function errorHandling(error: any, req: Request, res: Response, next: Nex
         return res.status(error.statusCode).json({ message: error.message });
     };
 
+    //erro de email duplicado pelo firebase authenticator
+    if(error.code === "auth/email-already-exists"){
+        return res.status(409).json({ message: "E-mail já está cadastrado" });
+    }
+
     //retorna um erro genérico se nao cair em nenhuma das cond
     return res.status(500).json({ message: error.message });
 }
