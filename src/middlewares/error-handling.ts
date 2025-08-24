@@ -12,6 +12,11 @@ export function errorHandling(error: any, req: Request, res: Response, next: Nex
     if(error.code === "auth/email-already-exists"){
         return res.status(409).json({ message: "E-mail já está cadastrado" });
     }
+    //erro de email/senha inválidos pelo firebase authenticator
+    if(error.code === "auth/invalid-credential"){
+        return res.status(401).json({ message: "E-mail ou senha inválidos!" });
+    }
+    
 
     //retorna um erro genérico se nao cair em nenhuma das cond
     return res.status(500).json({ message: error.message });
