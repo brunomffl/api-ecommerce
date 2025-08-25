@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "@/utils/AppError";
+import { getAuth } from "firebase-admin/auth";
+import { UserServices } from "@/services";
 
-export function ensureAuthenticated(req: Request, res: Response, next: NextFunction){
+export async function ensureAuthenticated(req: Request, res: Response, next: NextFunction){
     try{
         const authHeader = req.headers.authorization;
 
@@ -10,8 +12,15 @@ export function ensureAuthenticated(req: Request, res: Response, next: NextFunct
         }
     
         const [, token] = authHeader.split(" ");
-    
-        console.log(token);
+
+        const decodedIdToken = await getAuth().verifyIdToken(token, true);
+
+        const user = await new UserServices().show(decodedIdToken.uid);
+        if(!user){
+            throw new AppError("Acesso negado!", 403)
+        }
+
+        req.user = user;
 
         return next()
 
