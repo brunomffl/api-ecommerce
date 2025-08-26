@@ -26,8 +26,8 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
 
     } catch(error){
         if (error instanceof AppError){
-            throw error
+            return next(error)
         }
-        throw new AppError("JWT Inválido!", 401)
+        return next(new AppError("JWT Inválido!", 401))
     }
 }

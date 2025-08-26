@@ -50,22 +50,18 @@ class UserServices{
         await getFirestore().collection("users").doc(userAuth.uid).set(userWithUid);
     }
 
-    async update(id: string, nome: string, email: string): Promise<void>{
-        const docRef = getFirestore().collection("users").doc(id);
+    async update(id: string, user: User): Promise<void>{
+        await this.authService.update(id, user);
 
-        if ((await docRef.get()).exists) {
-            await docRef.set({
-                nome,
-                email,
-            });
-        } else {
-            throw new AppError("Usuário não encontrado", 404)
-        }
+        const { password, ...userData } = user;
+        await getFirestore().collection("users").doc(id).set(userData, { merge: true });
     }
 
     async delete(id: string): Promise<void>{
         const user = await getFirestore().collection("users").doc(id);
         const doc = await user.get();
+
+        await this.authService.delete(id);
 
         if(!doc.exists){
             throw new AppError("Usuário não encontrado!", 404)

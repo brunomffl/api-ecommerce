@@ -16,7 +16,8 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use(errors()); // Celebrate errors PRIMEIRO
-app.use(errorHandling); // Seu middleware customizado DEPOIS
+app.use(errors());
+
+app.use(errorHandling);
 
 export { app };

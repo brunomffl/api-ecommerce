@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserServices } from "@/services";
+import { User } from "@/schemas/user-schema";
 
 class UsersController {
 
@@ -23,9 +24,9 @@ class UsersController {
     async update(req: Request, res: Response) {
 
         const { id } = req.params;
-        const { nome, email } = req.body;
+        const user = req.body as User;
 
-        await new UserServices().update(id, nome, email);
+        await new UserServices().update(id, user);
 
         return res.status(204).end();
     };
