@@ -13,6 +13,12 @@ class AuthController {
             token
         })
     }
-};
 
-export { AuthController }
+    async recovery(req: Request, res: Response){
+        const { email } = req.body
+
+        await new AuthService().recovery(email);
+
+        res.end();
+    };
+}

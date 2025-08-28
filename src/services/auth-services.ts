@@ -1,6 +1,6 @@
 import { User } from "@/schemas/user-schema";
 import { getAuth, UpdateRequest, UserRecord } from "firebase-admin/auth";
-import { getAuth as getFirebaseAuth, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
+import { getAuth as getFirebaseAuth, sendPasswordResetEmail, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
 
 class AuthService {
 
@@ -33,6 +33,10 @@ class AuthService {
     async login(email: string, password: string): Promise<UserCredential>{
         return signInWithEmailAndPassword(getFirebaseAuth(), email, password);
     };
+
+    async recovery(email: string) {
+        await sendPasswordResetEmail(getFirebaseAuth(), email);
+    }
 };
 
 export { AuthService };
